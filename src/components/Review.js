@@ -35,10 +35,10 @@ const Review = () => {
   return (
     // 1. --- CUTE FIX ---
     // Added a light background to the whole section
-    <section id="review" className="review p-8 bg-sky-50">
+    <section id="review" className="review p-8 bg-sky-50cursor-pointer">
       
       <motion.h1
-        className="heading text-center text-4xl mb-12 font-bold"
+        className="heading text-center text-4xl mb-12 font-bold cursor-pointer"
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -64,7 +64,7 @@ const Review = () => {
             // Changed bg-blue-900 to bg-sky-100 (light blue)
             // Changed rounded to rounded-2xl
             // Changed border color to match
-            className="box relative text-center p-8 border-4 border-sky-200 shadow-lg rounded-2xl bg-sky-100"
+            className="box relative text-center p-8 border-4 border-sky-200 shadow-lg rounded-2xl bg-sky-100 cursor-pointer"
             variants={cardVariants}
             // 4. --- CUTE HOVER ---
             // Added a small rotate to make it "wobble"

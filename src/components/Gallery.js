@@ -23,25 +23,18 @@ const Gallery = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { type: 'spring', damping: 12, stiffness: 120 },
-    },
+    visible: { opacity: 1, scale: 1, transition: { type: 'spring', damping: 12, stiffness: 120 } },
   };
 
   return (
-    <section id="gallery" className="gallery p-8 bg-gradient-to-b from-[#fff7f7] to-[#ffe6e6]">
+    <section id="gallery" className="gallery p-10 bg-gradient-to-b from-[#fff7f7] to-[#ffe6e6] cursor-pointer">
       <motion.h1
-        className="heading text-center text-4xl mb-12 font-extrabold text-pink-600"
+        className="heading text-center text-5xl mb-14 font-extrabold text-pink-600"
         initial={{ opacity: 0, y: -50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -52,7 +45,7 @@ const Gallery = () => {
 
       <div className="max-w-6xl mx-auto">
         <motion.div
-          className="box-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="box-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -61,7 +54,7 @@ const Gallery = () => {
           {galleryItems.map((item, index) => {
             const isLastItem = index === 6;
             const cardClasses = [
-              "relative overflow-hidden rounded-3xl shadow-lg border-4 border-white group bg-white/50 backdrop-blur-sm",
+              "relative overflow-hidden rounded-3xl shadow-2xl border-4 border-white group bg-white/50 backdrop-blur-sm",
               isLastItem ? "sm:col-span-2 lg:col-span-3" : ""
             ].join(" ");
 
@@ -70,13 +63,13 @@ const Gallery = () => {
                 key={index}
                 className={cardClasses}
                 variants={cardVariants}
-                whileHover={{ scale: 1.03 }}
+                whileHover={{ scale: 1.05 }}
               >
                 {/* Image */}
                 <img
                   src={item.img}
                   alt={item.title}
-                  className={`w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${!isLastItem ? 'aspect-video' : ''}`}
+                  className={`w-full h-80 sm:h-96 object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${!isLastItem ? 'aspect-video' : ''}`}
                 />
 
                 {/* Floating text + button */}
@@ -85,14 +78,14 @@ const Gallery = () => {
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="text-3xl font-extrabold text-white mb-3 hover-text-outline"
+                    className="text-4xl sm:text-5xl font-extrabold text-white mb-4 hover-text-outline"
                   >
                     {item.title}
                   </motion.h2>
 
                   <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    className="bg-pink-400 text-white font-semibold px-6 py-2 rounded-full shadow-md hover:bg-pink-500 transition-all"
+                    whileHover={{ scale: 1.15 }}
+                    className="bg-pink-400 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-pink-500 transition-all text-lg sm:text-xl"
                   >
                     😋 Let's Eat!
                   </motion.button>

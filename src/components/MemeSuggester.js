@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+// 1. --- IMPORT THE BACKGROUND IMAGE ---
+import homeBg from '../imgs/home-bg.jpg';
 
 // --- DATA (Same as before) ---
 const allMemes = [
@@ -22,7 +24,7 @@ const MemeSuggester = () => {
   const initialMemes = useMemo(() => shuffleArray(allMemes).slice(0, 4), []);
   
   const [memes, setMemes] = useState(initialMemes);
-  const [moodScores, setMoodScores] = useState({ silly: 0, happy: 0, tired: 0 });
+  const [moodScores, setMoodScores] =useState({ silly: 0, happy: 0, tired: 0 });
   const [suggestion, setSuggestion] = useState(null);
   const [animationClass, setAnimationClass] = useState('');
 
@@ -71,27 +73,29 @@ const MemeSuggester = () => {
     if (memes.length === 0 && !animationClass) {
       getSuggestion();
     }
-  }, [memes, animationClass]); // Now depends on animationClass too
+  }, [memes, animationClass]); 
 
   return (
-    // 1. --- NEW LAYOUT ---
-    // Make the section a flex column to center the game
-    <section id="suggester" className="p-8 pt-32 bg-sky-50 overflow-hidden min-h-screen flex flex-col items-center">
+    // 2. --- ADDED BACKGROUND ---
+    <section 
+      id="suggester" 
+      className="p-8 pt-32 bg-cover bg-center bg-no-repeat overflow-hidden min-h-screen flex flex-col items-center"
+      style={{ backgroundImage: `url(${homeBg})` }}
+    >
       <button
         onClick={() => navigate('/')}
-        // Aligned to the start of the flex container
-        className="flex items-center gap-2 text-gray-600 hover:text-sky-500 mb-8 text-lg font-medium self-start md:self-center"
+        // 3. --- CHANGED TEXT COLOR FOR VISIBILITY ---
+        className="flex items-center gap-2 text-gray-200 hover:text-white mb-8 text-lg font-medium self-start md:self-center"
       >
         <i className="fas fa-arrow-left"></i>
         Back to Home
       </button>
       
-      {/* 2. --- NEW LAYOUT ---
-          This div now holds all the game elements in a column */}
-      <div className="relative w-full max-w-sm mx-auto flex flex-col items-center justify-center">
+      {/* 4. --- MADE GAME AREA WIDER --- */}
+      <div className="relative w-full max-w-md mx-auto flex flex-col items-center justify-center"> {/* Was max-w-sm */}
 
-        {/* 3. --- CARD STACK AREA (BIGGER) --- */}
-        <div className="relative w-full h-[500px] flex items-center justify-center"> {/* Was h-[450px] */}
+        {/* 5. --- MADE CARD STACK TALLER --- */}
+        <div className="relative w-full h-[600px] flex items-center justify-center"> {/* Was h-[500px] */}
           
           {/* Suggestion Card */}
           {suggestion && (
@@ -100,7 +104,8 @@ const MemeSuggester = () => {
               <h3 className="text-3xl font-bold text-gray-800">Your flavor profile is...</h3>
               <h2 className="text-4xl font-bold text-sky-500 my-2">{suggestion.name}</h2>
               <p className="text-gray-600 text-lg my-4">{suggestion.desc}</p>
-              <img src={suggestion.img} alt={suggestion.name} className="w-full h-56 object-cover rounded-2xl my-4" /> {/* Taller image */}
+              {/* 6. --- MADE SUGGESTION IMAGE TALLER --- */}
+              <img src={suggestion.img} alt={suggestion.name} className="w-full h-64 object-cover rounded-2xl my-4" /> {/* Was h-56 */}
               <button
                 onClick={resetGame}
                 className="p-3 px-8 bg-sky-500 text-white rounded-full font-bold text-lg
@@ -111,7 +116,7 @@ const MemeSuggester = () => {
             </div>
           )}
 
-          {/* 4. --- MEME CARD STACK (BIGGER) --- */}
+          {/* 7. --- MADE MEME CARDS TALLER --- */}
           {!suggestion &&
             memes.map((meme, index) => {
               const isTopCard = index === memes.length - 1;
@@ -131,7 +136,7 @@ const MemeSuggester = () => {
               return (
                 <div
                   key={meme.id}
-                  className={`absolute w-full h-[500px] bg-white rounded-3xl shadow-2xl overflow-hidden {/* Was h-[450px] */}
+                  className={`absolute w-full h-[600px] bg-white rounded-3xl shadow-2xl overflow-hidden {/* Was h-[500px] */}
                     ${isTopCard ? animationClass : ''}
                     transition-all duration-300
                   `}
@@ -142,27 +147,26 @@ const MemeSuggester = () => {
               );
             })}
 
-          {/* Empty state (Bigger) */}
+          {/* 8. --- MADE EMPTY STATE TALLER --- */}
           {!suggestion && memes.length === 0 && (
-            <div className="w-full h-[500px] bg-gray-200 rounded-3xl flex items-center justify-center text-center p-8"> {/* Was h-[450px] */}
+            <div className="w-full h-[600px] bg-gray-200 rounded-3xl flex items-center justify-center text-center p-8"> {/* Was h-[500px] */}
               <h3 className="text-3xl font-bold text-gray-500">Finding your flavor...</h3>
             </div>
           )}
         </div>
         
-        {/* 5. --- TITLE (MOVED DOWN) --- */}
-        {/* This section only appears if there is NO suggestion */}
+        {/* 9. --- TITLE (MOVED DOWN) --- */}
         {!suggestion && (
           <div className="text-center mt-8">
-            <h1 className="heading text-4xl mb-2 font-bold">
+            {/* 10. --- CHANGED TEXT COLOR FOR VISIBILITY --- */}
+            <h1 className="heading text-4xl mb-2 font-bold text-white">
               What's Your <span className="text-sky-500">Food Mood?</span>
             </h1>
-            <p className="text-lg text-gray-600">Click the buttons to find your flavor!</p>
+            <p className="text-lg text-gray-200">Click the buttons to find your flavor!</p>
           </div>
         )}
         
-        {/* 6. --- SWIPE BUTTONS (MOVED DOWN) --- */}
-        {/* These buttons only appear if there is NO suggestion and there are memes to swipe */}
+        {/* 10. --- SWIPE BUTTONS (MOVED DOWN) --- */}
         {!suggestion && memes.length > 0 && (
           <div className="flex justify-center gap-16 mt-6">
             <button

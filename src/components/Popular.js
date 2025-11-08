@@ -40,7 +40,7 @@ const Popular = () => {
   return (
     <section id="popular" className="popular p-10 bg-gradient-to-b from-[#fff7f7] to-[#ffe6e6]">
       <motion.h1
-        className="heading text-center text-4xl mb-12 font-extrabold text-pink-600"
+        className="heading text-center text-5xl mb-12 font-extrabold text-pink-600"
         initial={{ opacity: 0, y: -40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -50,7 +50,7 @@ const Popular = () => {
       </motion.h1>
 
       <motion.div
-        className="grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto"
+        className="grid gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -59,13 +59,13 @@ const Popular = () => {
         {popularItems.map((item, index) => (
           <motion.div
             key={index}
-            className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 text-center group border border-pink-100"
+            className="relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 text-center group border border-pink-100 p-100 cursor-pointer"
             variants={cardVariants}
-            whileHover={{ scale: 1.04 }}
+            whileHover={{ scale: 1.06 }}
             whileTap={{ scale: 0.97 }}
           >
             {/* Price Tag */}
-            <span className="absolute top-4 left-4 bg-gradient-to-r from-pink-500 to-orange-400 text-white text-sm sm:text-base px-4 py-1 rounded-full shadow-md font-semibold">
+            <span className="cursor-pointer absolute top-4 left-4 bg-gradient-to-r from-pink-500 to-orange-400 text-white text-base px-5 py-2 rounded-full shadow-md font-semibold">
               {item.price}
             </span>
 
@@ -73,24 +73,24 @@ const Popular = () => {
             <img
               src={item.img}
               alt={item.title}
-              className="w-full h-56 object-cover rounded-t-3xl transition-transform duration-700 group-hover:scale-110"
+              className="w-full h-72 sm:h-80 object-cover rounded-t-3xl transition-transform duration-700 group-hover:scale-110"
             />
 
             {/* Title */}
-            <h3 className="text-2xl font-bold text-gray-800 mt-4">{item.title}</h3>
+            <h3 className="text-3xl sm:text-4xl font-bold text-gray-800 mt-6">{item.title}</h3>
 
             {/* Stars */}
-            <div className="flex justify-center py-2">
+            <div className="flex justify-center py-3">
               {[...Array(5)].map((_, i) => (
-                <i key={i} className="fas fa-star text-yellow-400 text-lg mx-0.5"></i>
+                <i key={i} className="fas fa-star text-yellow-400 text-2xl mx-1"></i>
               ))}
             </div>
 
             {/* Button */}
             <motion.a
               href="#order"
-              className="inline-block mt-4 mb-6 bg-pink-500 text-white px-6 py-2 rounded-full text-lg font-semibold hover:bg-pink-600 shadow-md hover:shadow-lg transition-all"
-              whileHover={{ scale: 1.07 }}
+              className="inline-block mt-6 mb-6 bg-pink-500 text-white px-8 py-3 rounded-full text-xl font-semibold hover:bg-pink-600 shadow-md hover:shadow-lg transition-all"
+              whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
             >
               Order Now 🚀
