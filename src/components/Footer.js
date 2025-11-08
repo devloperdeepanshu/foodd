@@ -131,7 +131,6 @@ const Footer = () => {
         viewport={{ once: true }}
         transition={{ duration: 1, delay: 0.5 }} // Fades in after columns
       >
-        Created by <a href="https://vigneshgbe.neocities.org" className="text-teal-600 hover:text-red-500 font-medium">Vignesh G</a> | All rights reserved
       </motion.h1>
     </motion.footer>
   );
