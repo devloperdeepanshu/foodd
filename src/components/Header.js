@@ -13,7 +13,7 @@ const Header = () => {
 
   // Live user count effect
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = setInterval(() => {    
       const change = Math.floor(Math.random() * 7) - 3;
       setUserCount(prev => Math.max(50, prev + change));
     }, 3000);
@@ -41,15 +41,26 @@ const Header = () => {
         <motion.a href="#gallery" whileHover={{ y: -3 }} className="text-xl text-gray-600 hover:text-red-500">gallery</motion.a>
         <motion.a href="#review" whileHover={{ y: -3 }} className="text-xl text-gray-600 hover:text-red-500">reviews</motion.a>
 
-        {/* Live users */}
-        <div className="flex items-center gap-2 text-green-500" title="Live Users">
-          <i className="fas fa-circle text-xs animate-pulse"></i>
-          <span className="font-medium text-lg">Live: {userCount}</span>
+        {/* Hanging Live Users Indicator */}
+        <div className="relative flex flex-col items-center ml-4">
+          {/* The string */}
+          <div className="w-[2px] h-8 bg-gray-300 origin-top"></div>
+
+          {/* Swinging user bubble */}
+          <motion.div
+            className="flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow-md"
+            initial={{ rotate: -20 }}
+            animate={{ rotate: [ -20, 20, -20 ] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <i className="fas fa-circle text-green-500 text-xs"></i>
+            <span className="font-medium text-sm md:text-lg">Live: {userCount}</span>
+          </motion.div>
         </div>
 
         {/* Chat button */}
         <motion.button 
-          className="text-2xl text-gray-600 hover:text-red-500"
+          className="text-2xl text-gray-600 hover:text-red-500 ml-4"
           whileHover={{ y: -3, scale: 1.1 }}
           onClick={() => setIsChatOpen(prev => !prev)}
           title="Chat With Us"
@@ -57,7 +68,7 @@ const Header = () => {
           <i className="fas fa-comments"></i>
         </motion.button>
 
-        {/* Parking / Pre-Order */}
+        {/* Parking / Pre-Order / Meme Suggester */}
         <div className="flex items-center gap-4 ml-2">
           <MotionLink
             to="/parking"
@@ -75,6 +86,14 @@ const Header = () => {
           >
             Pre-Order
           </motion.a>
+          <MotionLink
+            to="/suggester"
+            className="text-pink-500 border-2 border-pink-500 px-6 py-2 rounded-full font-semibold transition duration-300 hover:bg-pink-50 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Meme Suggester 😸
+          </MotionLink>
         </div>
       </nav>
 
@@ -120,6 +139,15 @@ const Header = () => {
               >
                 Pre-Order
               </motion.a>
+              <MotionLink
+                to="/suggester"
+                className="text-center text-pink-500 border-2 border-pink-500 px-6 py-2 rounded-full font-semibold transition duration-300 hover:bg-pink-50"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setMenuOpen(false)}
+              >
+                Meme Suggester 😸
+              </MotionLink>
             </div>
           </motion.nav>
         )}
