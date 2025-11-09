@@ -7,13 +7,19 @@ import { useNavigate, Link } from 'react-router-dom';
 const MotionLink = motion(Link);
 
 const BTSLogo = () => (
-// ... (BTSLogo component is the same)
+  <motion.div
+    className="w-4 h-4 relative"
+    animate={{ scale: [1, 1.2, 1] }}
+    transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+  >
+    <div className="w-2 h-4 bg-purple-500 rounded-tl-sm rounded-bl-sm absolute left-0"></div>
+    <div className="w-2 h-4 bg-purple-500 rounded-tr-sm rounded-br-sm absolute right-0"></div>
+  </motion.div>
 );
 
-// 3. --- ADDED 'id' TO EACH CAFE ---
+// 3. --- NO 'id' NEEDED ANYMORE ---
 const cafeData = [
   {
-    id: 'the-cozy-mug',
     name: 'The Cozy Mug',
     tags: ['Coffee', 'Bakery'],
     rating: 4.5,
@@ -24,56 +30,8 @@ const cafeData = [
     offers: ['Up to 15% off', 'Free Coffee'],
     features: ['AC', 'Good Seating']
   },
+  // ... (all your other cafe data objects) ...
   {
-    id: 'seoul-brew',
-    name: 'Seoul Brew',
-    tags: ['K-Pop', 'Boba Tea'],
-    rating: 4.8,
-    location: 'Majnu-ka-tilla, Delhi',
-    distance: '1.2 km',
-    price: '₹900 for two',
-    img: 'https://placehold.co/400x300/E1BEE7/9C27B0?text=Seoul+Brew',
-    offers: ['10% off on Boba'],
-    features: ['AC', 'K-Pop Vibe', 'BTS']
-  },
-  {
-    id: 'readers-cafe',
-    name: 'Reader\'s Cafe',
-    tags: ['Books', 'Quiet'],
-    rating: 4.6,
-    location: 'Indiranagar, Bangalore',
-    distance: '0.8 km',
-    price: '₹600 for two',
-    img: 'https://placehold.co/400x300/8D6E63/FFFFFF?text=Reader\'s+Cafe',
-    offers: ['Flat 10% off'],
-    features: ['AC', 'Good Seating', 'Library']
-  },
-  {
-    id: 'purple-haze',
-    name: 'Purple Haze',
-    tags: ['BTS Army', 'Desserts'],
-    rating: 4.9,
-    location: 'Koramangala, Bangalore',
-    distance: '2.1 km',
-    price: '₹1000 for two',
-    img: 'https://placehold.co/400x300/D1C4E9/673AB7?text=Purple+Haze',
-    offers: ['Buy 1 Get 1 Free Dessert'],
-    features: ['AC', 'Good Seating', 'K-Pop Vibe', 'BTS']
-  },
-  {
-    id: 'the-chai-stop',
-    name: 'The Chai Stop',
-    tags: ['Tea', 'Snacks'],
-    rating: 4.2,
-    location: 'Jayanagar, Bangalore',
-    distance: '0.3 km',
-    price: '₹300 for two',
-    img: 'https://placehold.co/400x300/FFAB91/E64A19?text=Chai+Stop',
-    offers: ['Combo Offer'],
-    features: ['Good Seating']
-  },
-  {
-    id: 'pixel-play',
     name: 'Pixel Play',
     tags: ['Gaming', 'Shakes'],
     rating: 4.7,
@@ -87,10 +45,29 @@ const cafeData = [
 ];
 
 // ... (containerVariants and cardVariants are the same)
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+const cardVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { type: 'spring', damping: 15, stiffness: 100 } },
+};
 // ...
+
 const Cafes = () => {
   const navigate = useNavigate();
-  const backgroundStyle = { /* ... (background style is the same) ... */ };
+  const backgroundStyle = {
+    backgroundColor: '#f0f9ff', // bg-sky-50
+    backgroundImage: `
+      linear-gradient(135deg, #dbeafe 25%, transparent 25%),
+      linear-gradient(225deg, #dbeafe 25%, transparent 25%),
+      linear-gradient(45deg, #dbeafe 25%, transparent 25%),
+      linear-gradient(315deg, #dbeafe 25%, #f0f9ff 25%)
+    `,
+    backgroundSize: '20px 20px',
+    backgroundPosition: '0 0, 10px 0, 10px -10px, 0px 10px',
+  };
 
   return (
     <section 
@@ -119,10 +96,10 @@ const Cafes = () => {
         animate="visible"
       >
         {cafeData.map((cafe) => (
-          // 4. --- WRAPPED CARD IN MOTIONLINK ---
+          // 4. --- UPDATED LINK ---
           <MotionLink
-            to={`/cafes/${cafe.id}`} // This is the new link
-            key={cafe.id}
+            to={`/seating-arrangement`} // This is the new simple link
+            key={cafe.name} // Use name as key since id is gone
             className="w-full bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 cursor-pointer"
             variants={cardVariants}
             whileHover={{ scale: 1.03, zIndex: 10, transition: { duration: 0.2 } }}
@@ -138,7 +115,38 @@ const Cafes = () => {
             {/* Content (same as before) */}
             <div className="p-4">
               <h3 className="text-xl font-bold truncate">{cafe.name}</h3>
+              <p className="text-sm text-gray-500 truncate">{cafe.tags.join(', ')}</p>
+              <div className="flex justify-between text-sm text-gray-600 my-2">
+                <span>{cafe.price}</span>
+                <span>{cafe.distance}</span>
+              </div>
+              
               {/* ... (rest of the card content) ... */}
+              <div className="flex flex-wrap gap-2 my-3">
+                {cafe.features.includes('AC') && (
+                  <div className="flex items-center gap-1 bg-sky-100 text-sky-700 text-xs px-2 py-1 rounded-full">
+                    <i className="fas fa-wind"></i>
+                    <span>AC</span>
+                  </div>
+                )}
+                {cafe.features.includes('Good Seating') && (
+                  <div className="flex items-center gap-1 bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                    <i className="fas fa-chair"></i>
+                    <span>Good Seating</span>
+                  </div>
+                )}
+                {cafe.features.includes('K-Pop Vibe') && (
+                  <div className="flex items-center gap-1 bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">
+                    {cafe.features.includes('BTS') && <BTSLogo />}
+                    <span>K-Pop Vibe</span>
+                  </div>
+                )}
+                {/* ... (other features) ... */}
+              </div>
+
+              <div className="border-t border-gray-100 pt-3">
+                <p className="text-sm text-green-600 font-medium">{cafe.offers.join(' | ')}</p>
+              </div>
             </div>
           </MotionLink>
         ))}
