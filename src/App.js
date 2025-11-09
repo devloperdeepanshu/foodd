@@ -15,7 +15,7 @@ import Cafes from './components/Cafes';
 import SeatingArrangement from './components/SeatingArrangement'; 
 
 function App() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(true);
   
   // --- LOADING STATE ---
   const [isLoading, setIsLoading] = useState(true);
