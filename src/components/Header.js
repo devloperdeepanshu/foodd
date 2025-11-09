@@ -78,6 +78,14 @@ const Header = () => {
           >
             Parking
           </MotionLink>
+           <MotionLink
+            to="/cafes"
+            className="text-red-500 border-2 border-red-500 px-6 py-2 rounded-full font-semibold transition duration-300 hover:bg-red-50 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Cafes
+          </MotionLink>
           <motion.a
             href="#order"
             className="bg-red-500 text-white px-6 py-2 rounded-full font-semibold transition duration-300 hover:bg-red-600"
