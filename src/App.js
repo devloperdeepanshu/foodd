@@ -54,7 +54,7 @@ function App() {
           <Route path="/parking" element={<Parking />} />
           <Route path="/suggester" element={<MemeSuggester />} />
           <Route path="/cafes" element={<Cafes />} />
-          <Route path="/cafes/:cafeId" element={<SeatingArrangement />} /> 
+          <Route path="/seating-arrangement" element={<SeatingArrangement />} /> 
           <Route path="/order" element={<Order />} /> 
           
           <Route path="*" element={<h1>404: Page Not Found</h1>} />
