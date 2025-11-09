@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// 1. --- REMOVED USEPARAMS ---
 import { useNavigate } from 'react-router-dom';
 
-// 2. --- REMOVED cafeData and BTSLogo ---
-
-// 3. --- "CUTE" TABLE LAYOUT (Same as before) ---
+// "CUTE" TABLE LAYOUT
 const tablesLayout = [
   { id: 'T1', type: '2-seat', label: 'T1' },
   { id: 'T2', type: '2-seat', label: 'T2' },
@@ -19,13 +16,10 @@ const tablesLayout = [
 
 const SeatingArrangement = () => {
   const navigate = useNavigate();
-  // 4. --- REMOVED cafeId and cafe logic ---
-
-  // This is the same logic as Parking.js, but for tables
   const [bookedTables, setBookedTables] = useState(['T2', 'B1']);
   const [selectedTable, setSelectedTable] = useState(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
-  const [formData, setFormData] = useState({ name: '', date: '', time: '', cafeName: '' }); // 5. --- ADDED 'cafeName' field ---
+  const [formData, setFormData] = useState({ name: '', date: '', time: '', cafeName: '' });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,7 +29,6 @@ const SeatingArrangement = () => {
     e.preventDefault();
     setBookedTables([...bookedTables, selectedTable.id]);
     setBookingSuccess(true);
-    // 6. --- UPDATED EMAIL TO INCLUDE CAFE NAME ---
     const mailtoLink = `mailto:vigneshgbecse@gmail.com?subject=Table Reservation&body=Cafe Name: ${formData.cafeName}%0AName: ${formData.name}%0ADate: ${formData.date}%0ATime: ${formData.time}%0ATable: ${selectedTable.label}`;
     window.location.href = mailtoLink;
     setFormData({ name: '', date: '', time: '', cafeName: '' });
@@ -58,7 +51,7 @@ const SeatingArrangement = () => {
     exit: { opacity: 0, x: -50 },
   };
 
-  // 7. --- "CUTE" BACKGROUND (Same as before) ---
+  // "CUTE" BACKGROUND (Same as before)
   const backgroundStyle = {
     backgroundColor: '#f0f9ff', // bg-sky-50
     backgroundImage: `
@@ -69,8 +62,6 @@ const SeatingArrangement = () => {
     `,
     backgroundSize: '20px 20px',
   };
-
-  // 8. --- REMOVED !cafe check ---
 
   return (
     <section 
@@ -87,7 +78,6 @@ const SeatingArrangement = () => {
         Back to Cafes
       </motion.button>
       
-      {/* 9. --- GENERIC TITLE --- */}
       <motion.h1
         className="heading text-center text-4xl mb-12 font-bold"
         initial={{ opacity: 0, y: -50 }}
@@ -100,38 +90,75 @@ const SeatingArrangement = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         
-        {/* --- 10. "CUTE" SEATING MAP (Same as before) --- */}
+        {/* --- 1. "CUTER" SEATING MAP --- */}
         <motion.div
-          className="bg-gray-700 p-6 rounded-2xl shadow-lg"
+          // Changed to a "wood" color
+          className="bg-orange-100 p-6 rounded-2xl shadow-lg"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h3 className="text-2xl font-bold text-white text-center mb-6">Select Your Table</h3>
-          {/* ... (rest of the map is the same) ... */}
-          <div className="grid grid-cols-3 gap-4 p-4 bg-gray-800 rounded-lg">
+          <h3 className="text-2xl font-bold text-orange-900 text-center mb-6">Select Your Table</h3>
+          {/* This grid shows the tables */}
+          <div className="grid grid-cols-3 gap-4 p-4 bg-orange-200 rounded-lg">
             {tablesLayout.map((table) => {
               const isBooked = bookedTables.includes(table.id);
               const isSelected = selectedTable?.id === table.id;
+              
+              // 2. --- "CUTE" ICONS ---
+              let icon = '';
+              if (table.type === '2-seat') icon = 'fa-user-friends';
+              if (table.type === '4-seat') icon = 'fa-users';
+              if (table.type === 'booth') icon = 'fa-couch';
+
               return (
                 <motion.button
                   key={table.id}
                   disabled={isBooked}
                   onClick={() => handleTableClick(table)}
-                  className={`rounded-lg text-sm font-bold ... ${isBooked ? '... cursor-not-allowed' : ''} ...`}
-                  whileHover={!isBooked ? { scale: 1.05 } : {}}
+                  // 3. --- "CUTER" TABLE STYLES ---
+                  className={`rounded-lg font-bold transition-all duration-200 flex flex-col items-center justify-center p-2
+                    ${table.type === 'booth' ? 'col-span-3 h-16' : ''}
+                    ${table.type === '4-seat' ? 'col-span-1 h-24' : ''}
+                    ${table.type === '2-seat' ? 'col-span-1 h-20' : ''}
+                    
+                    ${isBooked ? 'bg-red-200 text-red-600 cursor-not-allowed' : ''}
+                    ${isSelected ? 'bg-sky-500 text-white ring-4 ring-sky-300' : ''}
+                    ${!isBooked && !isSelected ? 'bg-green-200 text-green-800 hover:bg-green-300' : ''}
+                  `}
+                  whileHover={!isBooked ? { scale: 1.1, zIndex: 10 } : {}}
                   whileTap={!isBooked ? { scale: 0.95 } : {}}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1, transition: { type: 'spring', delay: 0.5 } }}
                 >
-                  {isBooked ? <i className="fas fa-times"></i> : table.label}
+                  {/* 4. --- SHOW ICON --- */}
+                  <i className={`fas ${isBooked ? 'fa-ban' : icon} text-2xl mb-1`}></i>
+                  <span className="text-sm">{table.label}</span>
                 </motion.button>
               );
             })}
           </div>
-          {/* ... (Legend is the same) ... */}
+          {/* 5. --- "CUTER" LEGEND --- */}
+          <div className="flex flex-wrap justify-around mt-6 text-orange-900 text-sm">
+            <div className="flex items-center gap-2 m-1">
+              <div className="w-4 h-4 rounded bg-green-200 border border-green-400"></div>
+              <span>Available</span>
+            </div>
+            <div className="flex items-center gap-2 m-1">
+              <div className="w-4 h-4 rounded bg-red-200 text-red-600 flex items-center justify-center">
+                <i className="fas fa-ban text-xs"></i>
+              </div>
+              <span>Taken</span>
+            </div>
+            <div className="flex items-center gap-2 m-1">
+              <div className="w-4 h-4 rounded bg-sky-500"></div>
+              <span>Selected</span>
+            </div>
+          </div>
         </motion.div>
 
-        {/* --- 11. BOOKING FORM (Updated) --- */}
+        {/* --- 6. BOOKING FORM (Looks good, no change needed) --- */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
           <AnimatePresence mode="wait">
             {/* Show this if a table IS selected */}
@@ -146,11 +173,11 @@ const SeatingArrangement = () => {
                       </span>
                     </h3>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                      {/* 12. --- NEW INPUT FIELD --- */}
                       <input type="text" name="cafeName" placeholder="Cafe Name" onChange={handleChange} value={formData.cafeName} className="p-4 rounded-lg bg-gray-100 border-transparent focus:ring-2 focus:ring-sky-500 focus:outline-none" required />
                       <input type="text" name="name" placeholder="Your Name" onChange={handleChange} value={formData.name} className="p-4 rounded-lg bg-gray-100 border-transparent focus:ring-2 focus:ring-sky-500 focus:outline-none" required />
                       <input type="date" name="date" onChange={handleChange} value={formData.date} className="p-4 rounded-lg bg-gray-100 border-transparent focus:ring-2 focus:ring-sky-500 focus:outline-none" required />
                       <input type="time" name="time" onChange={handleChange} value={formData.time} className="p-4 rounded-lg bg-gray-100 border-transparent focus:ring-2 focus:ring-sky-500 focus:outline-none" required />
+Example
                       <motion.button
                         type="submit"
                         className="p-4 bg-sky-500 text-white rounded-full font-bold text-lg mt-2 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
@@ -164,7 +191,10 @@ const SeatingArrangement = () => {
                 ) : (
                   // Success Message
                   <motion.div key="success" className="text-center flex flex-col items-center justify-center h-full" variants={formVariants} initial="hidden" animate="visible" exit="exit">
-                    {/* ... (Success message is the same) ... */}
+                    <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                      <i className="fas fa-check-circle text-green-500 text-7xl"></i>
+                    </div>
+                    <h3 className="text-3xl font-bold text-green-600 mb-2">Booked!</h3>
                     <p className="text-lg text-gray-700">Your table <span className="font-bold">{selectedTable.label}</span> is reserved.</p>
                     <p className="text-gray-600 mb-6">A confirmation email is on its way!</p>
                     <motion.button
