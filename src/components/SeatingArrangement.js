@@ -2,21 +2,16 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-// "CUTE" TABLE LAYOUT
+// 1. --- SIMPLE TABLE LAYOUT (Just like parkingSpots) ---
 const tablesLayout = [
-  { id: 'T1', type: '2-seat', label: 'T1' },
-  { id: 'T2', type: '2-seat', label: 'T2' },
-  { id: 'B1', type: 'booth', label: 'Booth 1' },
-  { id: 'T3', type: '4-seat', label: 'T3' },
-  { id: 'T4', type: '4-seat', label: 'T4' },
-  { id: 'T5', type: '2-seat', label: 'T5' },
-  { id: 'T6', type: '2-seat', label: 'T6' },
-  { id: 'B2', type: 'booth', label: 'Booth 2' },
+  'T1', 'T2', 'T3', 'T4',
+  'T5', 'T6', 'T7', 'T8',
+  'T9', 'T10', 'T11', 'T12',
 ];
 
 const SeatingArrangement = () => {
   const navigate = useNavigate();
-  const [bookedTables, setBookedTables] = useState(['T2', 'B1']);
+  const [bookedTables, setBookedTables] = useState(['T2', 'T5', 'T9']);
   const [selectedTable, setSelectedTable] = useState(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [formData, setFormData] = useState({ name: '', date: '', time: '', cafeName: '' });
@@ -27,15 +22,15 @@ const SeatingArrangement = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setBookedTables([...bookedTables, selectedTable.id]);
+    setBookedTables([...bookedTables, selectedTable]);
     setBookingSuccess(true);
-    const mailtoLink = `mailto:vigneshgbecse@gmail.com?subject=Table Reservation&body=Cafe Name: ${formData.cafeName}%0AName: ${formData.name}%0ADate: ${formData.date}%0ATime: ${formData.time}%0ATable: ${selectedTable.label}`;
+    const mailtoLink = `mailto:vigneshgbecse@gmail.com?subject=Table Reservation&body=Cafe Name: ${formData.cafeName}%0AName: ${formData.name}%0ADate: ${formData.date}%0ATime: ${formData.time}%0ATable: ${selectedTable}`;
     window.location.href = mailtoLink;
     setFormData({ name: '', date: '', time: '', cafeName: '' });
   };
 
   const handleTableClick = (table) => {
-    if (bookedTables.includes(table.id)) return;
+    if (bookedTables.includes(table)) return;
     setSelectedTable(table);
     setBookingSuccess(false);
   };
@@ -90,39 +85,28 @@ const SeatingArrangement = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         
-        {/* --- 1. "CUTER" SEATING MAP --- */}
+        {/* --- 2. "PARKING BOX" STYLE MAP --- */}
         <motion.div
-          // Changed to a "wood" color
-          className="bg-orange-100 p-6 rounded-2xl shadow-lg"
+          className="bg-gray-700 p-6 rounded-2xl shadow-lg"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h3 className="text-2xl font-bold text-orange-900 text-center mb-6">Select Your Table</h3>
-          {/* This grid shows the tables */}
-          <div className="grid grid-cols-3 gap-4 p-4 bg-orange-200 rounded-lg">
+          <h3 className="text-2xl font-bold text-white text-center mb-6">Select Your Table</h3>
+          {/* 3. --- SIMPLE 4-COLUMN GRID --- */}
+          <div className="grid grid-cols-4 gap-4 p-4 bg-gray-800 rounded-lg">
             {tablesLayout.map((table) => {
-              const isBooked = bookedTables.includes(table.id);
-              const isSelected = selectedTable?.id === table.id;
-              
-              // 2. --- "CUTE" ICONS ---
-              let icon = '';
-              if (table.type === '2-seat') icon = 'fa-user-friends';
-              if (table.type === '4-seat') icon = 'fa-users';
-              if (table.type === 'booth') icon = 'fa-couch';
+              const isBooked = bookedTables.includes(table);
+              const isSelected = selectedTable === table;
 
               return (
                 <motion.button
-                  key={table.id}
+                  key={table}
                   disabled={isBooked}
                   onClick={() => handleTableClick(table)}
-                  // 3. --- "CUTER" TABLE STYLES ---
-                  className={`rounded-lg font-bold transition-all duration-200 flex flex-col items-center justify-center p-2
-                    ${table.type === 'booth' ? 'col-span-3 h-16' : ''}
-                    ${table.type === '4-seat' ? 'col-span-1 h-24' : ''}
-                    ${table.type === '2-seat' ? 'col-span-1 h-20' : ''}
-                    
+                  // 4. --- "PARKING BOX" SPOT STYLES ---
+                  className={`rounded-lg font-bold transition-all duration-200 flex flex-col items-center justify-center p-2 h-20
                     ${isBooked ? 'bg-red-200 text-red-600 cursor-not-allowed' : ''}
                     ${isSelected ? 'bg-sky-500 text-white ring-4 ring-sky-300' : ''}
                     ${!isBooked && !isSelected ? 'bg-green-200 text-green-800 hover:bg-green-300' : ''}
@@ -132,15 +116,15 @@ const SeatingArrangement = () => {
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1, transition: { type: 'spring', delay: 0.5 } }}
                 >
-                  {/* 4. --- SHOW ICON --- */}
-                  <i className={`fas ${isBooked ? 'fa-ban' : icon} text-2xl mb-1`}></i>
-                  <span className="text-sm">{table.label}</span>
+                  {/* 5. --- "PARKING BOX" ICONS --- */}
+                  <i className={`fas ${isBooked ? 'fa-ban' : 'fa-chair'} text-2xl mb-1`}></i>
+                  <span className="text-sm">{table}</span>
                 </motion.button>
               );
             })}
           </div>
-          {/* 5. --- "CUTER" LEGEND --- */}
-          <div className="flex flex-wrap justify-around mt-6 text-orange-900 text-sm">
+          {/* 6. --- "PARKING BOX" LEGEND --- */}
+          <div className="flex flex-wrap justify-around mt-6 text-white text-sm">
             <div className="flex items-center gap-2 m-1">
               <div className="w-4 h-4 rounded bg-green-200 border border-green-400"></div>
               <span>Available</span>
@@ -158,7 +142,7 @@ const SeatingArrangement = () => {
           </div>
         </motion.div>
 
-        {/* --- 6. BOOKING FORM (Looks good, no change needed) --- */}
+        {/* --- 7. BOOKING FORM (Already "cute" and consistent) --- */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
           <AnimatePresence mode="wait">
             {/* Show this if a table IS selected */}
@@ -169,7 +153,7 @@ const SeatingArrangement = () => {
                     <h3 className="text-3xl font-bold text-gray-800 mb-6">
                       Book Table: 
                       <span className="ml-2 p-2 px-4 bg-sky-100 text-sky-700 rounded-full">
-                        {selectedTable.label}
+                        {selectedTable}
                       </span>
                     </h3>
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -177,7 +161,6 @@ const SeatingArrangement = () => {
                       <input type="text" name="name" placeholder="Your Name" onChange={handleChange} value={formData.name} className="p-4 rounded-lg bg-gray-100 border-transparent focus:ring-2 focus:ring-sky-500 focus:outline-none" required />
                       <input type="date" name="date" onChange={handleChange} value={formData.date} className="p-4 rounded-lg bg-gray-100 border-transparent focus:ring-2 focus:ring-sky-500 focus:outline-none" required />
                       <input type="time" name="time" onChange={handleChange} value={formData.time} className="p-4 rounded-lg bg-gray-100 border-transparent focus:ring-2 focus:ring-sky-500 focus:outline-none" required />
-Example
                       <motion.button
                         type="submit"
                         className="p-4 bg-sky-500 text-white rounded-full font-bold text-lg mt-2 shadow-lg hover:shadow-xl hover:scale-105 transition-all"
@@ -195,7 +178,7 @@ Example
                       <i className="fas fa-check-circle text-green-500 text-7xl"></i>
                     </div>
                     <h3 className="text-3xl font-bold text-green-600 mb-2">Booked!</h3>
-                    <p className="text-lg text-gray-700">Your table <span className="font-bold">{selectedTable.label}</span> is reserved.</p>
+                    <p className="text-lg text-gray-700">Your table <span className="font-bold">{selectedTable}</span> is reserved.</p>
                     <p className="text-gray-600 mb-6">A confirmation email is on its way!</p>
                     <motion.button
                       onClick={handleBookAnother}
