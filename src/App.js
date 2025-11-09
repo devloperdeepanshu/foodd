@@ -9,7 +9,6 @@ import Order from './components/Order';
 import Footer from './components/Footer';
 import Chatbot from './components/Chatbot';
 import MemeSuggester from './components/MemeSuggester';
-import Restaurants from './components/Restaurants';
 import Loader from './components/Loader';
 import Login from './components/Login';
 import Cafes from './components/Cafes';
@@ -54,7 +53,6 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/parking" element={<Parking />} />
           <Route path="/suggester" element={<MemeSuggester />} />
-          <Route path="/restaurants" element={<Restaurants />} />
           <Route path="/cafes" element={<Cafes />} />
           <Route path="/cafes/:cafeId" element={<SeatingArrangement />} /> 
           <Route path="/order" element={<Order />} /> 
